@@ -7,9 +7,26 @@ specifies that any user authenticated via an API key can "create", "read",
 "update", and "delete" any "Todo" records.
 =========================================================================*/
 const schema = a.schema({
-  Todo: a
+  Timesheet: a
     .model({
-      content: a.string(),
+      description: a.string(),
+      rate: a.float(),
+      // one-to-many relationship: a Todo has many Entry items
+      lineItems: a.hasMany('LineItem', 'timesheetId'),
+    })
+    .authorization((allow) => [allow.owner()]),
+
+  // Entry model: belongs to a single Todo (many entries -> one todo)
+  LineItem: a
+    .model({
+      // reference field that points to the Todo.id
+      timesheetId: a.id(),
+      // example fields for an entry
+      date: a.date(),
+      minutes: a.float(),
+      // If you prefer a nested JSON shape for lineItems you can use:
+      // lineItems: a.json(),
+      timesheet: a.belongsTo('Timesheet', 'timesheetId'),
     })
     .authorization((allow) => [allow.owner()]),
 });
