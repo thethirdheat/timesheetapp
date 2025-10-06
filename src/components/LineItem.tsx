@@ -1,5 +1,3 @@
-import React from 'react';
-
 export type LineDetails = {
     date: string;
     minutesCount: number;
