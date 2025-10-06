@@ -432,13 +432,13 @@ function App() {
         rows={3}
         style={{ width: '100%', marginBottom: '16px' }}
       />
-
+      <hr></hr>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '16px' }}>
         <input
           type="date"
           value={newLine.date}
           onChange={e => setNewLine(prev => ({ ...prev, date: e.target.value }))}
-          style={{ padding: '4px' }}
+          style={{ padding: '4px', width: '240px', position: 'relative', zIndex: 2, pointerEvents: 'auto' }}
         />
         <input
           type="number"
@@ -447,34 +447,51 @@ function App() {
           onChange={e => setNewLine(prev => ({ ...prev, minutesCount: Math.max(0, Number(e.target.value) || 0) }))}
           style={{ width: '80px', padding: '4px' }}
         />
-        <button onClick={handleAddLineItem} style={{ marginLeft: '8px' }}>
+        minutes
+        <button className="secondary contrast" onClick={handleAddLineItem} style={{ marginLeft: '192px', marginBottom: '16px' }}>
           Add Line Item
         </button>
       </div>
+      <hr></hr>
 
       {Object.entries(store.lineItems)
         .sort(([, a], [, b]) => new Date(a.date).getTime() - new Date(b.date).getTime())
         .map(([key, value]) => (
-          <div key={key} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-            <LineItem
-              lineDetails={value}
-              lineKey={key}
-              onDateChange={handleDateChange}
-              onMinutesChange={handleMinutesChange}
-            />
-            <button
-              onClick={() => handleRemoveLineItem(key)}
-              style={{ marginLeft: '8px' }}
-              aria-label="Remove line item"
-            >
-              Remove
-            </button>
+          <div
+            key={key}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '651px 100px',
+              gap: '8px',
+              alignItems: 'center',
+            }}
+          >
+            <div style={{ width: '400px' }}>
+              <LineItem
+                lineDetails={value}
+                lineKey={key}
+                onDateChange={handleDateChange}
+                onMinutesChange={handleMinutesChange}
+              />
+            </div>
+            <div style={{ width: '100px', justifySelf: 'center' }}>
+              <button
+                className="secondary outline"
+                onClick={() => handleRemoveLineItem(key)}
+                aria-label="Remove line item"
+                style={{ width: '110px', marginBottom: '16px', fontSize: '16px' }}
+              >
+                Remove
+              </button>
+            </div>
           </div>
         ))}
 
-      <div style={{ marginTop: '16px' }}>
+
+      <hr></hr>
+      <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <label>
-          <span style={{ fontWeight: 'bold' }}>Rate: </span>
+          <span >Rate: </span>
           <input
             type="number"
             min="0"
@@ -489,15 +506,17 @@ function App() {
             style={{ width: '80px', marginLeft: '8px' }}
           />
         </label>
+
+        <div style={{ marginBottom: '16px' }}>Total Minutes: {totalMinutes}</div>
       </div>
 
-      <div style={{ marginTop: '16px', fontWeight: 'bold' }}>Total Minutes: {totalMinutes}</div>
 
-      <div style={{ marginTop: '8px', fontWeight: 'bold' }}>Total Cost: {totalCost}</div>
-      <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
-        <button onClick={signOut}>Sign out</button>
+      <div style={{ display: 'flex', gap: '8px', marginTop: '12px', justifyContent: 'space-between' }}>
+        <h3 style={{ marginTop: '8px', fontWeight: 'bold' }}>Total Cost: {totalCost}</h3>
         <button onClick={handleSaveAll} disabled={isSaving}>{isSaving ? 'Saving...' : 'Save All'}</button>
       </div>
+      <hr></hr>
+      <button style={{ marginTop: '16px' }} className="outline" onClick={signOut}>Sign out</button>
     </main>
   );
 }

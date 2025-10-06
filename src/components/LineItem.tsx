@@ -12,20 +12,21 @@ type Props = {
 
 export default function LineItem({ lineDetails, lineKey, onDateChange, onMinutesChange }: Props) {
     return (
-        <div>
+        <div className="line-item" style={{ display: "flex", alignItems: "center" }}>
             <input
                 type="date"
                 value={lineDetails.date}
                 onChange={e => onDateChange(lineKey, e.target.value)}
+                style={{ position: 'relative', zIndex: 2, pointerEvents: 'auto' }}
             />
             <input
                 type="number"
                 min="0"
                 value={lineDetails.minutesCount}
                 onChange={e => onMinutesChange(lineKey, e.target.value)}
-                style={{ width: "60px", marginLeft: "8px" }}
+                style={{ width: "80px", marginLeft: "8px" }}
             />
-            <span> minutes</span>
+            <span style={{ marginBottom: "20px" }}>&nbsp; &nbsp;minutes</span>
         </div>
     );
 }
